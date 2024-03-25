@@ -6,6 +6,7 @@ class RefImpl<T> {
     private _value: T
     private _rawValue: T
     public dep
+    public __v_isRef = true
 
     constructor(value: T) {
         this._value = convert(value)
@@ -39,4 +40,13 @@ function trackRefValue(ref: any) {
 
 export function ref<T>(value: T) {
     return new RefImpl(value)
+}
+
+export function isRef<T>(ref: RefImpl<T> | T): ref is RefImpl<T> {
+    return !!(ref as RefImpl<T>)?.__v_isRef;
+}
+
+
+export function unRef<T>(ref: RefImpl<T> | T) {
+    return isRef(ref) ? ref.value : ref
 }
