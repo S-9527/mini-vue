@@ -4,7 +4,16 @@ export const App = {
     render() {
         window.self = this
 
-        return h('div', { id: "root", class: ["red", "hard"]}, [
+        return h('div', {
+            id: "root",
+            class: ["red", "hard"],
+            onClick() {
+                console.log('click');
+            },
+            onMousedown(){
+                console.log("mousedown")
+            }
+        }, [
             h("p", { class: "red" }, "hi"),
             h("p", { class: "blue" }, "mini-vue"),
             h("p", { class: "yellow" }, "hi, " + this.msg)
