@@ -1,3 +1,3 @@
 export function createVNode(type: any, props?: any, children?: any) {
-    return { type, props, children }
+    return { type, props, children, el: null }
 }
