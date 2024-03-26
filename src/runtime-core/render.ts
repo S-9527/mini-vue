@@ -1,14 +1,16 @@
 import { createComponentInstance, setupComponent } from "./component";
-import { isObject } from "../shared";
+import { ShapeFlags } from "../shared/shapeFlags";
+import { VNode } from "./vnode";
 
 export function render(vnode: any, container: any) {
     patch( vnode, container)
 }
 
-function patch(vnode: any, container: any) {
-    if (typeof vnode.type === 'string') {
+function patch(vnode: VNode, container: any) {
+    const { shapeFlags } = vnode
+    if (shapeFlags & ShapeFlags.ELEMENT) {
         processElement(vnode, container)
-    } else if (isObject(vnode.type)) {
+    } else if (shapeFlags & ShapeFlags.STATEFUL_COMPONENT) {
         processComponent(vnode, container)
     }
 }
@@ -17,13 +19,13 @@ function processElement(vnode: any, container: any) {
     mountElement(vnode, container)
 }
 
-function mountElement(vnode: any, container: any) {
+function mountElement(vnode: VNode, container: any) {
     const el = vnode.el = document.createElement(vnode.type)
-    const { children } = vnode
+    const { children, shapeFlags } = vnode
 
-    if (typeof children === 'string') {
+    if (shapeFlags & ShapeFlags.TEXT_CHILDREN) {
         el.textContent = children
-    } else if (Array.isArray(children)) {
+    } else if (shapeFlags & ShapeFlags.ARRAY_CHILDREN) {
         mountChildren(vnode, el)
     }
 
