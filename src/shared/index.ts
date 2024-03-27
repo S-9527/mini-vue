@@ -9,3 +9,16 @@ export const isObject = (val: any) => {
 export const hasChanged = (val: any, newVal: any) => {
     return !Object.is(val, newVal);
 }
+
+export const camelize = (str: string) => {
+    return str.replace(/-(\w)/g, (_, c: string) => {
+        return c ? c.toUpperCase() : ''
+    })
+}
+export const toHandlerKey = (str: string) => {
+    return str ? 'on' + capitalized(str) : ''
+}
+
+const capitalized = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+}
