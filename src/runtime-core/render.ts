@@ -3,14 +3,14 @@ import { ShapeFlags } from "../shared/shapeFlags";
 import { VNode } from "./vnode";
 
 export function render(vnode: any, container: any) {
-    patch( vnode, container)
+    patch(vnode, container)
 }
 
 function patch(vnode: VNode, container: any) {
-    const { shapeFlags } = vnode
-    if (shapeFlags & ShapeFlags.ELEMENT) {
+    const { shapeFlag } = vnode
+    if (shapeFlag & ShapeFlags.ELEMENT) {
         processElement(vnode, container)
-    } else if (shapeFlags & ShapeFlags.STATEFUL_COMPONENT) {
+    } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
         processComponent(vnode, container)
     }
 }
@@ -21,11 +21,11 @@ function processElement(vnode: any, container: any) {
 
 function mountElement(vnode: VNode, container: any) {
     const el = vnode.el = document.createElement(vnode.type)
-    const { children, shapeFlags } = vnode
+    const { children, shapeFlag } = vnode
 
-    if (shapeFlags & ShapeFlags.TEXT_CHILDREN) {
+    if (shapeFlag & ShapeFlags.TEXT_CHILDREN) {
         el.textContent = children
-    } else if (shapeFlags & ShapeFlags.ARRAY_CHILDREN) {
+    } else if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
         mountChildren(vnode, el)
     }
 

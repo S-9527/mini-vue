@@ -4,7 +4,7 @@ export interface VNode {
     props: any
     children: any
     el: any
-    shapeFlags: number
+    shapeFlag: number
 }
 
 export function createVNode(type: any, props?: any, children?: any) {
@@ -12,20 +12,26 @@ export function createVNode(type: any, props?: any, children?: any) {
         type,
         props,
         children,
-        shapeFlags: getShapeFlags(type),
+        shapeFlag: getShapeFlag(type),
         el: null
     };
 
     if (typeof children === 'string') {
-        vnode.shapeFlags |= ShapeFlags.TEXT_CHILDREN;
+        vnode.shapeFlag |= ShapeFlags.TEXT_CHILDREN;
     } else if (Array.isArray(children)) {
-        vnode.shapeFlags |= ShapeFlags.ARRAY_CHILDREN;
+        vnode.shapeFlag |= ShapeFlags.ARRAY_CHILDREN;
+    }
+
+    if(vnode.shapeFlag & ShapeFlags.STATEFUL_COMPONENT){
+        if(typeof children === "object"){
+            vnode.shapeFlag |= ShapeFlags.SLOT_CHILDREN
+        }
     }
 
     return vnode;
 }
 
-function getShapeFlags(type: any) {
+function getShapeFlag(type: any) {
     return typeof type === 'string'
         ? ShapeFlags.ELEMENT
         : ShapeFlags.STATEFUL_COMPONENT
