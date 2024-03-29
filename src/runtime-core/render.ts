@@ -1,18 +1,40 @@
 import { createComponentInstance, setupComponent } from "./component";
 import { ShapeFlags } from "../shared/shapeFlags";
-import { VNode } from "./vnode";
+import { Fragment, Text, VNode } from "./vnode";
 
 export function render(vnode: any, container: any) {
     patch(vnode, container)
 }
 
 function patch(vnode: VNode, container: any) {
-    const { shapeFlag } = vnode
-    if (shapeFlag & ShapeFlags.ELEMENT) {
-        processElement(vnode, container)
-    } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
-        processComponent(vnode, container)
+    const { type, shapeFlag } = vnode
+
+    switch (type) {
+        case Fragment:
+            processFragment(vnode, container)
+            break;
+        case Text:
+            processText(vnode, container)
+            break;
+
+        default:
+            if (shapeFlag & ShapeFlags.ELEMENT) {
+                processElement(vnode, container)
+            } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
+                processComponent(vnode, container)
+            }
+            break
     }
+}
+
+function processFragment(vnode: VNode, container: any) {
+    mountChildren(vnode, container)
+}
+
+function processText(vnode: VNode, container: any) {
+    const { children } = vnode
+    const textNode= vnode.el = document.createTextNode(children)
+    container.append(textNode)
 }
 
 function processElement(vnode: any, container: any) {
