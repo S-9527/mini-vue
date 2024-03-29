@@ -1,5 +1,7 @@
 export const extend = Object.assign
 
+export const EMPTY_OBJ = {}
+
 export const hasOwn = (val: any, key: any) => Object.prototype.hasOwnProperty.call(val, key)
 
 export const isObject = (val: any) => {
