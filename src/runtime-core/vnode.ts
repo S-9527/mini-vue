@@ -7,6 +7,7 @@ export interface VNode {
     type: any
     props: any
     children: any,
+    component: any
     key: any
     el: any
     shapeFlag: number
@@ -17,6 +18,7 @@ export function createVNode(type: any, props?: any, children?: any) {
         type,
         props,
         children,
+        component: null,
         key: props && props.key,
         shapeFlag: getShapeFlag(type),
         el: null
