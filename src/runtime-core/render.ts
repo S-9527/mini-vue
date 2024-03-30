@@ -4,6 +4,7 @@ import { ShapeFlags } from "../shared/shapeFlags";
 import { Fragment, Text, VNode } from "./vnode";
 import { createAppAPI } from "./createApp";
 import { effect } from "../reactivity/effect";
+import { queueJobs } from "./scheduler";
 import { EMPTY_OBJ } from "../shared";
 
 export function createRenderer(options: any) {
@@ -316,7 +317,8 @@ export function createRenderer(options: any) {
     }
 
     function setupRenderEffect(instance: any, initialVNode: any, container: any, anchor: any) {
-      instance.update = effect(() => {
+      instance.update = effect(
+          () => {
             if (!instance.isMounted) {
                 console.log("init")
                 const { proxy } = instance
@@ -340,7 +342,12 @@ export function createRenderer(options: any) {
 
                 patch(prevSubTree, subTree, container, instance, anchor)
             }
-        })
+        },
+          {
+              scheduler() {
+                  queueJobs(instance.update)
+              }
+          })
     }
 
     return {
