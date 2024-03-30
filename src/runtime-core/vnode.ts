@@ -6,7 +6,8 @@ export const Text = Symbol("Text");
 export interface VNode {
     type: any
     props: any
-    children: any
+    children: any,
+    key: any
     el: any
     shapeFlag: number
 }
@@ -16,6 +17,7 @@ export function createVNode(type: any, props?: any, children?: any) {
         type,
         props,
         children,
+        key: props && props.key,
         shapeFlag: getShapeFlag(type),
         el: null
     };
