@@ -4,6 +4,8 @@ export const EMPTY_OBJ = {}
 
 export const hasOwn = (val: any, key: any) => Object.prototype.hasOwnProperty.call(val, key)
 
+export const isString = (val: any) => typeof val === 'string'
+
 export const isObject = (val: any) => {
     return val !== null && typeof val === 'object';
 }
