@@ -1,1 +1,1 @@
-export * from './complier'
+export * from './complie'

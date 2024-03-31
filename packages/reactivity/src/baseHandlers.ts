@@ -17,6 +17,10 @@ function createGetter(isReadonly = false, shallow = false) {
 
         const res = Reflect.get(target, key);
 
+        if (!isReadonly) {
+            //fix: 在触发 get 的时候进行依赖收集(先收集后 return)
+            track(target, key);
+        }
 
         if (shallow) {
             return res;
@@ -26,9 +30,6 @@ function createGetter(isReadonly = false, shallow = false) {
             return isReadonly ? readonly(res) : reactive(res)
         }
 
-        if (!isReadonly) {
-            track(target, key);
-        }
         return res;
     }
 }

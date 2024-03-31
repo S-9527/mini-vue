@@ -76,6 +76,10 @@ export function isTracking() {
 
 export function trigger(target: object, key: string | symbol) {
     let depsMap = targetMap.get(target);
+
+    // fix: 在没有 effect 时修改 reactive 的值, depsMap 为空, 不需要 triggerEffects
+    if (!depsMap) return
+
     let dep = depsMap.get(key);
 
     triggerEffects(dep)
