@@ -1,0 +1,13 @@
+{
+  "name": "@mini-vue/runtime-dom",
+  "version": "1.0.0",
+  "description": "@mini-vue/runtime-dom",
+  "main": "index.js",
+  "keywords": [
+    "mini-vue"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@mini-vue/runtime-core": "workspace:*"
+  }
+}

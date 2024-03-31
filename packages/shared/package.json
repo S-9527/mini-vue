@@ -1,0 +1,10 @@
+{
+  "name": "@mini-vue/shared",
+  "version": "1.0.0",
+  "description": "@mini-vue/shared",
+  "main": "src/index.ts",
+  "keywords": [
+    "mini-vue"
+  ],
+  "license": "MIT"
+}

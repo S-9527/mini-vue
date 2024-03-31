@@ -4,22 +4,63 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-devDependencies:
-  '@rollup/plugin-typescript':
-    specifier: ^11.1.6
-    version: 11.1.6(rollup@4.13.0)(tslib@2.6.2)(typescript@5.4.3)
-  rollup:
-    specifier: ^4.13.0
-    version: 4.13.0
-  tslib:
-    specifier: ^2.6.2
-    version: 2.6.2
-  typescript:
-    specifier: ^5.4.3
-    version: 5.4.3
-  vitest:
-    specifier: ^1.4.0
-    version: 1.4.0
+importers:
+
+  .:
+    devDependencies:
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.6
+        version: 11.1.6(rollup@4.13.0)(tslib@2.6.2)(typescript@5.4.3)
+      rollup:
+        specifier: ^4.13.0
+        version: 4.13.0
+      tslib:
+        specifier: ^2.6.2
+        version: 2.6.2
+      typescript:
+        specifier: ^5.4.3
+        version: 5.4.3
+      vitest:
+        specifier: ^1.4.0
+        version: 1.4.0
+
+  packages/compiler-core:
+    dependencies:
+      '@mini-vue/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/reactivity:
+    dependencies:
+      '@mini-vue/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/runtime-core:
+    dependencies:
+      '@mini-vue/reactivity':
+        specifier: workspace:*
+        version: link:../reactivity
+      '@mini-vue/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/runtime-dom:
+    dependencies:
+      '@mini-vue/runtime-core':
+        specifier: workspace:*
+        version: link:../runtime-core
+
+  packages/shared: {}
+
+  packages/vue:
+    dependencies:
+      '@mini-vue/compiler-core':
+        specifier: workspace:*
+        version: link:../compiler-core
+      '@mini-vue/runtime-dom':
+        specifier: workspace:*
+        version: link:../runtime-dom
 
 packages:
 

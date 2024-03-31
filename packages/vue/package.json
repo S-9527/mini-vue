@@ -1,0 +1,14 @@
+{
+  "name": "mini-vue",
+  "version": "1.0.0",
+  "description": "mini-vue",
+  "main": "index.js",
+  "keywords": [
+    "mini-vue"
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "@mini-vue/runtime-dom": "workspace:*",
+    "@mini-vue/compiler-core": "workspace:*"
+  }
+}
