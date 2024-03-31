@@ -322,7 +322,7 @@ export function createRenderer(options: any) {
             if (!instance.isMounted) {
                 console.log("init")
                 const { proxy } = instance
-                const subTree = instance.subTree = instance.render.call(proxy)
+                const subTree = instance.subTree = instance.render.call(proxy, proxy)
                 patch(null,subTree, container, instance, anchor)
                 initialVNode.el = subTree.el
 
@@ -336,7 +336,7 @@ export function createRenderer(options: any) {
                 }
 
                 const { proxy } = instance
-                const subTree = instance.render.call(proxy)
+                const subTree = instance.render.call(proxy, proxy)
                 const prevSubTree = instance.subTree
                 instance.subTree = subTree
 
