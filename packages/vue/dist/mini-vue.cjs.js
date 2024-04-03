@@ -171,6 +171,9 @@ function isTracking() {
 }
 function trigger(target, key) {
     let depsMap = targetMap.get(target);
+    // fix: 在没有 effect 时修改 reactive 的值, depsMap 为空, 不需要 triggerEffects
+    if (!depsMap)
+        return;
     let dep = depsMap.get(key);
     triggerEffects(dep);
 }
@@ -209,14 +212,15 @@ function createGetter(isReadonly = false, shallow = false) {
             return isReadonly;
         }
         const res = Reflect.get(target, key);
+        if (!isReadonly) {
+            //fix: 在触发 get 的时候进行依赖收集(先收集后 return)
+            track(target, key);
+        }
         if (shallow) {
             return res;
         }
         if (isObject(res)) {
             return isReadonly ? readonly(res) : reactive(res);
-        }
-        if (!isReadonly) {
-            track(target, key);
         }
         return res;
     };
@@ -420,6 +424,7 @@ function createAppAPI(render) {
 }
 
 const queue = [];
+const activePreFlushCbs = [];
 const p = Promise.resolve();
 let isFlushPending = false;
 function nextTick(fn) {
@@ -437,8 +442,14 @@ function queueFlush() {
     isFlushPending = true;
     nextTick(flushJobs);
 }
+function flushPreFlushCbs() {
+    for (let i = 0; i < activePreFlushCbs.length; i++) {
+        activePreFlushCbs[i]();
+    }
+}
 function flushJobs() {
     isFlushPending = false;
+    flushPreFlushCbs();
     let job;
     while (job = queue.shift()) {
         job && job();
@@ -879,6 +890,7 @@ function createApp(...args) {
 
 var runtimeDom = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    ReactiveEffect: ReactiveEffect,
     createApp: createApp,
     createElementVNode: createVNode,
     createRenderer: createRenderer,
@@ -1288,6 +1300,8 @@ function compileToFunction(template) {
 }
 registerRuntimeCompiler(compileToFunction);
 
+exports.ReactiveEffect = ReactiveEffect;
+exports.baseCompile = baseCompile;
 exports.createApp = createApp;
 exports.createElementVNode = createVNode;
 exports.createRenderer = createRenderer;
