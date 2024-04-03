@@ -8,7 +8,7 @@ import babel from "prettier/plugins/babel";
 import estree from 'prettier/plugins/estree';
 
 import theme from "./theme.js";
-import { baseCompile, effect } from "../vue/dist/mini-vue.esm-bundler.js";
+import { baseCompile, effect } from "../../dist/mini-vue.esm-bundler.js";
 
 self.MonacoEnvironment = {
     getWorker(_, label) {
